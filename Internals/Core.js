@@ -498,11 +498,38 @@ const d = new Date();
   document.cookie = "Savedas=\"?"+data.toString()+"?\";" + expires + ";SameSite=None;Secure;path=/";
 }
 
+function Pagesavecookie()
+{
+const d = new Date();
+  d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+document.cookie = "LastPage=\""+SelectedPage+"\";" + expires + ";SameSite=None;Secure;path=/";
+
+document.cookie = "Databackup="+(JSON.stringify(CFV))+";" + expires + ";SameSite=None;Secure;path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 function Mod_Cookie(Name,flag)
 {
-	 if(document.cookie.startsWith("Savedas"))
+let biscuit = getCookie("Savedas")
+	 if(biscuit!="")
  {
-	var A = document.cookie.split("?")[1].split(",");
+	var A =biscuit.split("?")[1].split(",");
 	//console.log(A);
 	for(var I=0;I<A.length;I++)
 	{
@@ -523,9 +550,10 @@ function Mod_Cookie(Name,flag)
 } 
 function Get_Cookie_Secret(Name,flag)
 {
-if(document.cookie.startsWith("Savedas"))
+let biscuit = getCookie("Savedas")
+	 if(biscuit!="")
  {
-	var A = document.cookie.split("?")[1].split(",");
+	var A = biscuit.split("?")[1].split(",");
 	//console.log(A);
 	for(var I=0;I<A.length;I++)
 	{
@@ -1321,6 +1349,7 @@ for(var c=0;c<Blosite_Obj.attributes.length;c++)
 	PreviousPage = SelectedPage;
 	console.log(PreviousPage);
 	SelectedPage=Blosite_Obj.attributes[c].localName;
+	Pagesavecookie()
 	break;
 	}
 }
@@ -1384,6 +1413,7 @@ if(key=="Backspace")
 //V link Shortcut crypter V//
 function BACKDOOR(Unscrew=true,Totext)
 {
+
 var hack = window.location.href.split("?")[1];
 console.log(hack)
  if(!hack)
@@ -1475,7 +1505,15 @@ return Translate(Totext,true,null,null,null,null,null,Debreaker);
 //BACKDOOR(false,"TimeMouseKey_000");
 //BACKDOOR(false,"TimeMouseKey_002");
 if(!document.getElementById("Nez.Body").hasAttribute("Menuless")){
+if(getCookie("LastPage"))
+{
+CFV=JSON.parse(getCookie("Databackup"));
+GET_Menu(getCookie("LastPage").slice(1,-1));
+}
+else{
 GET_Menu(!BACKDOOR(true)?undefined:BACKDOOR(true)[0],!BACKDOOR(true)?undefined:BACKDOOR(true)[1]);
+}
+
 }PA_FORMAT();
 
 	/*!
