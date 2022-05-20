@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title id="Nez.Title">Text Story</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./Internals/Genjituyon-theme.css">
+<link rel="stylesheet" href="./Rp.css">
+</head>
+<!--
+Blosite Factors are stored in the body tag
+supported factors:
+Menuless - ignores/skip menudata related methods
+Cookies - enables all cookie methods 
+RP_VARS - Enables a Twine like variable system
+-->
+<body id="Nez.Body" RP_VARS Cookies>
+<script>
+CFV={"SCENECOLOR":'#B4A9D4', //180 169 212
+"NORMALTITLE":"Mansion Mania",
+"You":"Titanne",
+"BlindGrowth":false,
+"Quotes":{
+	"STR":{
+	"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"DEX":{
+		"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"INT":{
+	"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"HipMag":{
+	"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"END":{
+	"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"Misc":{
+	"stage0":"<br>\"[Text Missing 0]\"<br>",
+	"stage1":"<br>\"[Text Missing 1]\"<br>",
+	"stage2":"<br>\"[Text Missing 2]\"<br>",
+	"stage3":"<br>\"[Text Missing 3]\"<br>",
+	"stage4":"<br>\"[Text Missing 4]\"<br>",
+	},
+	"Realize":{
+	"STR":"<br>\"[Text Missing]\"<br>",
+	"DEX":"<br>\"[Text Missing]\"<br>",
+	"INT":"<br>\"[Text Missing]\"<br>",
+	"HipMag":"<br>\"[Text Missing]\"<br>",
+	"END":"<br>\"[Text Missing]\"<br>",
+	"Mega":"<br>\"[Text Missing]\"<br>",
+	},
+},
+"FLocal":false,
+"Lust":(0),
+"Location":"Outside",
+"MetaLocation":"",
+"current_Food":"",
+"OldStat":0,
+
+"Story_Progress":{
+},
+"Stats":
+{
+"STR":10,
+"INT":10,
+"HipMag":10,
+"DEX":10,
+"END":10
+},
+"Inventory":
+{
+"Metal":100
+},
+"StatsBonus":
+{
+"STR":0,
+"INT":0,
+"HipMag":0,
+"DEX":0,
+"END":0
+},
+"Challenges":{//Challenge mode
+"Randomizer":null,
+},
+"metricSystem":'imperial',
+"MENUONCE":false,
+"Settings":{
+"HyperGrowth":true, //Bigger results
+"InfiniteGrowth":true, //no limit on how big you can get
+"InfiniteCakes":false, //cakes can be eaten an infinite number of times
+"LimitLust":false, //Caps lust at 255
+}
+};
+
+PreviousPage="_Hub";
+SelectedPage="_Hub";
+
+function soft_Reload()
+{
+GET_Menu(PreviousPage)
+}
+//Code by v-3000//
+var convertToInches = function (value) {
+  const converted = Math.floor(value / 2.54)
+  return converted
+}
+
+var convertToCentimeters = function (value) {
+  const converted = value * 2.54
+  return converted
+}
+
+var convertMeasurementInch = function (value) {
+  if (CFV.metricSystem === 'metric') {
+    return convertMeasurementCentimeter(convertToCentimeters(value))
+  }
+
+  if ((value) >= 60) {
+    const converted = Math.floor(value / 12)
+    return Math.round(converted) + ' feet'
+  } else {
+    return Math.round(value) + ' inches'
+  }
+}
+
+var convertMeasurementCentimeter = function (value) {
+  if (CFV.metricSystem === 'imperial') {
+    return convertMeasurementInch(convertToInches(value))
+  }
+
+  if ((value) >= 100) {
+    const meters = value / 100
+    return meters.toFixed(2) + ' m'
+  } else {
+    return Math.round(value) + ' cm'
+  }
+}
+
+var convertHeightInch = function (value) {
+  if (CFV.metricSystem === 'metric') {
+    return convertHeightCentimeter(convertToCentimeters(value))
+  }
+
+  if ((value) >= 12) {
+    const feet = value / 12
+    const inches = value % 12
+    return Math.floor(feet) + '\'' + Math.floor(inches) + '"'
+  } else {
+    return Math.round(value) + '"'
+  }
+}
+
+var convertHeightCentimeter = function (value) {
+  if (CFV.metricSystem === 'imperial') {
+    return convertHeightInch(convertToInches(value))
+  }
+
+  if ((value) >= 100) {
+    const meters = value / 100
+    return meters.toFixed(2) + ' m'
+  } else {
+    return Math.round(value) + ' cm'
+  }
+}
+
+function getBustStage(int) {
+    if (int < stageValues.stage1) {
+      return bustStages.stage1
+    } else if (int <stageValues.stage2) {
+      return bustStages.stage2
+    } else if (int <stageValues.stage3) {
+      return bustStages.stage3
+    } else if (int < stageValues.stage4) {
+      return bustStages.stage4
+    } else if (int < stageValues.stage5) {
+      return bustStages.stage5
+    } else if (int <stageValues.stage6) {
+      return bustStages.stage6
+    } else if (int < stageValues.stage7) {
+      return bustStages.stage7
+    } else if (int < stageValues.stage8) {
+      return bustStages.stage8
+    } else if (int < stageValues.stage9) {
+      return bustStages.stage9
+    } else if (int < stageValues.stage10) {
+      return bustStages.stage10
+    } else if (int < stageValues.stage11) {
+      return bustStages.stage11
+    }
+    return bustStages.stage12
+  }
+
+function GetRoomStage(STR,INT,MAG,DEX,END)//priority In order: height, Hourglass(breasts and ass), Muscle
+{
+//{@Set-RoomDimension-({"AreaW":25,"AreaL":25,"CeilingH":18.5})@}
+var Character_Sexyness = {"Width":(getThighSize(DEX,END)*1.5)+(getHipSize(STR, DEX, MAG, END)*1.5)+(getBicepSize(STR,END))+INT,
+"Height":getHeight(END)+(getThighSize(DEX,END)*0.14)-(MAG*0.15)+(getBicepSize(STR,END)*0.2)
+};
+return CFV.You+" Height volume is "+convertHeightCentimeter(Character_Sexyness.Height)+" and her Width Volume is "+convertMeasurementCentimeter(Character_Sexyness.Width)+"."
+}
+
+function GetBustsize(val){
+    if (arguments.length < 1) {
+      return this.error('incorrect number of arguments')
+    }
+    let varString = ''
+	
+	
+   
+      if (val < stageValues.stage1) {
+        varString = 'A-cup'
+      } else if (val < stageValues.stage2) {
+        varString = 'B-cup'
+      } else if (val < stageValues.stage3) {
+        varString = 'C-cup'
+      } else if (val <= stageValues.stage3 + ((stageValues.stage4 - stageValues.stage3) / 2)) {
+        varString = 'D-cup'
+      } else if (val < stageValues.stage4) {
+        varString = 'E-cup'
+      } else if (val <= stageValues.stage4 + ((stageValues.stage5 - stageValues.stage4) * 2 / 5)) {
+        varString = 'F-cup'
+      } else if (val < stageValues.stage5) {
+        varString = 'G-cup'
+      } else if (val <= stageValues.stage5 + ((stageValues.stage6 - stageValues.stage5) * 2 / 5)) {
+        varString = 'H-cup'
+      } else if (val < stageValues.stage6) {
+        varString = 'I-cup'
+      } else if (val <= stageValues.stage6 + ((stageValues.stage7 - stageValues.stage6) * 2 / 8)) {
+        varString = 'J-cup'
+      } else if (val <= stageValues.stage6 + ((stageValues.stage7 - stageValues.stage6) * 5 / 8)) {
+        varString = 'K-cup'
+      } else if (val < stageValues.stage7) {
+        varString = 'L-cup'
+      } else if (val <= stageValues.stage7 + ((stageValues.stage8 - stageValues.stage7) * 2 / 7)) {
+        varString = 'M-cup'
+      } else if (val <= stageValues.stage7 + ((stageValues.stage8 - stageValues.stage7) * 5 / 7)) {
+        varString = 'N-cup'
+      } else if (val < stageValues.stage8) {
+        varString = 'O-cup'
+      } else if (val <= stageValues.stage8 + ((stageValues.stage9 - stageValues.stage8) * 3 / 8)) {
+        varString = 'P-cup'
+      } else if (val <= stageValues.stage8 + ((stageValues.stage9 - stageValues.stage8) * 5 / 8)) {
+        varString = 'Q-cup'
+      } else if (val < stageValues.stage9) {
+        varString = 'R-cup'
+      } else {
+        varString = 'unreasonably huge cup'
+      }
+  return varString;
+  }
+
+function CheckBustbreak()
+{
+const Growthtable =[
+	stageValues.stage1,
+	stageValues.stage2,
+	stageValues.stage3,
+	stageValues.stage3 + ((stageValues.stage4 - stageValues.stage3) / 2),
+	stageValues.stage4 + ((stageValues.stage5 - stageValues.stage4) * 2 / 5),
+	stageValues.stage5,
+	stageValues.stage5 + ((stageValues.stage6 - stageValues.stage5) * 2 / 5),
+	stageValues.stage6,
+	stageValues.stage6 + ((stageValues.stage7 - stageValues.stage6) * 2 / 8),
+	stageValues.stage6 + ((stageValues.stage7 - stageValues.stage6) * 5 / 8),
+	stageValues.stage7,
+	stageValues.stage7 + ((stageValues.stage8 - stageValues.stage7) * 2 / 7),
+	stageValues.stage7 + ((stageValues.stage8 - stageValues.stage7) * 5 / 7),
+	stageValues.stage8 + ((stageValues.stage9 - stageValues.stage8) * 3 / 8),
+	stageValues.stage8 + ((stageValues.stage9 - stageValues.stage8) * 5 / 8),
+	stageValues.stage9,
+	];
+
+console.log(Growthtable);
+}
+
+
+var stageValues = {
+  stage1: 13,
+  stage2: 15,
+  stage3: 18,
+  stage4: 23,
+  stage5: 31,
+  stage6: 43,
+  stage7: 60,
+  stage8: 83,
+  stage9: 113,
+  stage10: 151,
+  stage11: 200
+}
+var stageDialogueValues = {
+  stage1: 18,
+  stage2: 43,
+  stage3: 113,
+  stage4: 200
+}
+
+function GetQuote_STR()
+{
+if(CFV.Stats.STR<13&&CFV.BlindGrowth){return;}
+var varString = "";
+
+ if (CFV.Stats.STR < stageDialogueValues.stage1) {
+      varString += CFV.Quotes.STR.stage0
+    } else if (CFV.Stats.STR < stageDialogueValues.stage2) {
+      varString += CFV.Quotes.STR.stage1
+    } else if (CFV.Stats.STR < stageDialogueValues.stage3) {
+      varString += CFV.Quotes.STR.stage2
+    } else if (CFV.Stats.STR < stageDialogueValues.stage4) {
+      varString += CFV.Quotes.STR.stage3
+    } else {
+      varString += CFV.Quotes.STR.stage4
+    }
+	return varString;
+}
+
+function GetQuote_DEX()
+{
+var varString = "";
+if(CFV.Stats.DEX<13&&CFV.BlindGrowth){return;}
+
+ if (CFV.Stats.DEX < stageDialogueValues.stage1) {
+      varString += CFV.Quotes.DEX.stage0
+    } else if (CFV.Stats.DEX < stageDialogueValues.stage2) {
+      varString += CFV.Quotes.DEX.stage1
+    } else if (CFV.Stats.DEX < stageDialogueValues.stage3) {
+      varString += CFV.Quotes.DEX.stage2
+    } else if (CFV.Stats.DEX < stageDialogueValues.stage4) {
+      varString += CFV.Quotes.DEX.stage3
+    } else {
+      varString += CFV.Quotes.DEX.stage4
+    }
+	return varString;
+}
+
+function GetQuote_INT()
+{
+if(CFV.Stats.INT<=12&&CFV.BlindGrowth){return"";}
+var varString = "";
+
+ if (CFV.Stats.INT < stageDialogueValues.stage1) {
+      varString += CFV.Quotes.INT.stage0
+    } else if (CFV.Stats.INT < stageDialogueValues.stage2) {
+      varString += CFV.Quotes.INT.stage1
+    } else if (CFV.Stats.INT < stageDialogueValues.stage3) {
+      varString += CFV.Quotes.INT.stage2
+    } else if (CFV.Stats.INT < stageDialogueValues.stage4) {
+      varString += CFV.Quotes.INT.stage3
+    } else {
+      varString += CFV.Quotes.INT.stage4
+    }
+	return varString;
+}
+
+function GetQuote_HIPMAG()
+{
+var varString = "";
+if(CFV.Stats.HipMag-6<17&&CFV.BlindGrowth){return;}
+
+ if (CFV.Stats.HipMag-6 < stageDialogueValues.stage1) {
+      varString += CFV.Quotes.HipMag.stage0
+    } else if (CFV.Stats.HipMag-2 < stageDialogueValues.stage2) {
+      varString += CFV.Quotes.HipMag.stage1
+    } else if (CFV.Stats.HipMag < stageDialogueValues.stage3) {
+      varString += CFV.Quotes.HipMag.stage2
+    } else if (CFV.Stats.HipMag < stageDialogueValues.stage4) {
+      varString += CFV.Quotes.HipMag.stage3
+    } else {
+      varString += CFV.Quotes.HipMag.stage4
+    }
+	return varString;
+}
+
+function GetQuote_END()
+{
+var varString = "";
+if(CFV.Stats.END<13&&CFV.BlindGrowth){return;}
+
+ if (CFV.Stats.END < stageDialogueValues.stage1) {
+      varString += CFV.Quotes.END.stage0
+    } else if (CFV.Stats.END < stageDialogueValues.stage2) {
+      varString += CFV.Quotes.END.stage1
+    } else if (CFV.Stats.END < stageDialogueValues.stage3) {
+      varString += CFV.Quotes.END.stage2
+    } else if (CFV.Stats.END < stageDialogueValues.stage4) {
+      varString += CFV.Quotes.END.stage3
+    } else {
+      varString += CFV.Quotes.END.stage4
+    }
+	return varString;
+}
+
+
+var getHeight = function (end) {
+  let height = end * 15;
+  height = Math.round(height)
+  return height
+}
+
+var getHipSize = function (strength, dexterity, magic, end) {
+  const height = end * 0.15
+  const defaultHeight = 2
+  const hipWidth = (dexterity + magic) / 2
+  const rearSize = (strength + magic) / 2
+  const minSize = 20
+
+  let finalSize =Math.max((hipWidth * 0.75) + (rearSize * 0.75), minSize)
+
+  if (height < defaultHeight) {
+    return finalSize
+  } else {
+    finalSize = Math.round((height * finalSize) / defaultHeight)
+    return finalSize
+  }
+}
+
+var getThighSize = function (dex, end) {
+  const height =end * 0.15
+  const defaultHeight = 2
+  const minSize = 15
+  const dexterity =Math.max(Math.floor(dex * 1.25), minSize)
+
+  if (height < defaultHeight ) {
+    return dexterity
+  } else {
+    const finalSize = Math.round((height * dexterity) / defaultHeight)
+    return finalSize
+  }
+} 
+  
+var getBicepSize = function (str, end) {
+  const height = end * 0.15
+  const defaultHeight = 2
+  const minSize = 10
+  const strength = Math.max(str, minSize)
+
+  if (height < defaultHeight) {
+    return strength
+  } else {
+    const finalSize = Math.round((height * strength) / defaultHeight)
+    return finalSize
+  }
+}
+//end of Code by v-3000 (I really like these methods)//
+
+function Display_Stats()
+{
+/*<b>Name:</b><span id="P.Name">???</span><br>
+<b>Muscle:</b><span id="P.Strength">???</span><br>
+<b>Bust Size:</b><span id="P.Bust">???</span><br>
+<b>Rear:</b><span id="P.Hip">???</span><br>
+<b>Thighs:</b><span id="P.Thigh">???</span><br>
+<b>Height:</b><span id="P.Height">???</span><br>*/
+const NameDisplay = document.getElementById("P.Name");
+const MuscleDisplay = document.getElementById("P.Strength");
+const BustDisplay = document.getElementById("P.Bust");
+const RearDisplay = document.getElementById("P.Hip");
+const ThighDisplay = document.getElementById("P.Thigh");
+const HeightDisplay = document.getElementById("P.Height");
+
+NameDisplay.innerText=CFV.You;
+MuscleDisplay.innerText=convertMeasurementInch(getBicepSize(CFV.Stats.STR,CFV.Stats.END));
+BustDisplay.innerText=GetBustsize(CFV.Stats.INT);
+RearDisplay.innerText=convertMeasurementInch(getHipSize(CFV.Stats.STR,CFV.Stats.DEX,CFV.Stats.HipMag,CFV.Stats.END));
+ThighDisplay.innerText=convertMeasurementInch(getThighSize(CFV.Stats.DEX,CFV.Stats.END));
+HeightDisplay.innerText=convertHeightCentimeter(getHeight(CFV.Stats.END));
+
+}
+var current_Lust =0;
+setInterval(function(){
+if(current_Lust<CFV.Food_Lust)
+{
+current_Lust++;
+}else if(current_Lust>CFV.Food_Lust)
+{
+current_Lust--;
+}else{
+
+}
+current_Lust=Math.min(Math.max(0,current_Lust),(CFV.Settings.LimitLust?255:2147483647))
+if(CFV.Settings.LimitLust)
+{
+CFV.Food_Lust=Math.min(255,CFV.Food_Lust)}
+Lust_LevelRender();
+Display_Stats();
+},16);
+
+function decimalToHexString(number)
+{
+  if (number < 0)
+  {
+    number = 0xFFFFFFFF + number + 1;
+  }
+
+  return number.toString(16).toUpperCase().padStart(2, '0');
+}
+window.mobileAndTabletCheck = function() {
+  let check = false;
+  (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+  return check;
+};
+
+function Lust_LevelRender()
+{
+const rgb_lust=[decimalToHexString(Math.floor((180 +(255-180)*Math.min(current_Lust,255)/255))),decimalToHexString(Math.floor((169 +(0-169)*Math.min(current_Lust,255)/255))),decimalToHexString(Math.floor((212 +(170-212)*Math.min(current_Lust,255)/255)))];
+CFV.SCENECOLOR="#"+decimalToHexString(Math.floor((180 +(255-180)*Math.min(current_Lust,255)/255)))+decimalToHexString(Math.floor((169 +(0-169)*Math.min(current_Lust,255)/255)))+decimalToHexString(Math.floor((212 +(170-212)*Math.min(current_Lust,255)/255)));
+var PulseLove=((Math.min(current_Lust,255)-(Math.floor(255*0.6)))/(255-(Math.floor(255*0.6))));
+ if(Math.min(current_Lust,255)/255>=0.6)
+{
+const T=new Date();
+const R=Math.floor((parseInt(rgb_lust[0], 16) +(255-parseInt(rgb_lust[0], 16))*Math.max(0,Math.cos(T.getTime()/(500-(PulseLove*200)))*PulseLove)))
+const G=Math.floor((parseInt(rgb_lust[1], 16) +(50-parseInt(rgb_lust[1], 16))*Math.max(0,Math.cos(T.getTime()/(500-(PulseLove*200)))*PulseLove)))
+const B=Math.floor((parseInt(rgb_lust[2], 16) +(50-parseInt(rgb_lust[2], 16))*Math.max(0,Math.sin(T.getTime()/(500-(PulseLove*200)))*PulseLove)))
+CFV.SCENECOLOR="#"+decimalToHexString(R)+decimalToHexString(G)+decimalToHexString(B)
+}
+document.querySelector(':root').style.setProperty('--DEFAULTCOLOR', (!CFV.SCENECOLOR?'#00FF00':CFV.SCENECOLOR));
+if(window.mobileAndTabletCheck()||!CFV.Settings.LimitLust)
+{
+
+document.getElementById("Lustbar").innerHTML = "<b>Lust["+current_Lust+(CFV.Settings.LimitLust?"/255":"")+"]</b>"
+return;
+}
+//it's in a range from 0 to 255 in hex
+const sectors = 32;
+var Lusttext = "";
+var Fullbars=Math.ceil(Math.min(current_Lust,255)/8);
+for(var A=1;A<32;A++)
+{
+//console.log(Math.floor(Math.min(A*8,current_Lust)),Math.floor(Math.min(A*8,current_Lust))%8);
+
+if(A*8<=Math.min(current_Lust,255))
+{
+Lusttext+="■"
+}else{
+Lusttext+="□"
+}
+}
+
+
+
+document.getElementById("Lustbar").innerHTML = "<b>Lust["+Lusttext+"]</b> "}
+var showing_tab=false;
+
+function _GrowthOldShift(value)
+{
+CFV.OldStat = value;
+}
+
+function CheckBustDifference(Old,New)
+{
+if(New<13)
+{
+return "<br><br>"+CFV.You+" then felt a light fuzzy feeling in her chest before it quickly faded. \"It kinda tickles.\" she chucked.<br>"
+}
+if(GetBustsize(Old)===GetBustsize(New))
+{
+return "<br><br>"+CFV.You+"'s "+GetBustsize(Old)+" only had a marginal increase.<br>";
+}else{
+return "<br><br> Her once "+GetBustsize(Old)+" breasts grew and swelled into "+GetBustsize(New)+"s!<br>";
+}
+}
+
+function CheckHipDifference(Old,New)
+{
+if(New<16)
+{
+return "<br><br>"+CFV.You+"felt a light fuzzy feeling in her hips before it quickly faded. \"It kinda tickles.\" she chucked.<br>"
+}
+
+}
+var First_bite= true
+Loopbreaker="";
+function MM_MenuHandler()
+{
+
+//console.log(PreviousPage,SelectedPage,CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft);
+if(First_bite)
+{
+SelectedPage=SelectedPage.split("1")[0];
+}
+First_bite=false;
+
+if(SelectedPage==PreviousPage)
+{
+PreviousPage=Loopbreaker;
+}else{
+Loopbreaker=PreviousPage;
+}
+const RepeatBiteChunk="<span Announcer class=\"Nezu\"><Blosite MenuOption Click_safe onclick=\"console.log(this);Mobilelink_Set(this);\""+SelectedPage+">Take another bite</Blosite></span><br>";
+const RepeatBiteChunkBezerk="<span Announcer class=\"Nezu\"><Blosite MenuOption Click_safe onclick=\"console.log(this);Mobilelink_Set(this);\""+SelectedPage+">another bite wouldn't hurt~♥</Blosite></span><br>";
+const CancelBiteChunk="<span Announcer class=\"Nezu\"><Blosite MenuOption Click_safe onclick=\"console.log(this);Mobilelink_Set(this);\""+PreviousPage+">Continue on</Blosite></span><br>";
+const Nocake="<br>"+CFV.You+" decided that was enough dessert for now, and backed away.<br>";
+const Nocake2="<br>With not a crumb of the dessert remaining, "+CFV.You+" backed away, admiring the new enhancements.<br>";
+const chanceferal = (CFV.Food_Lust-48)/(255-48)
+const chance = (CFV.Food_Lust-48)/(150-48)
+var endtext ="";
+if(!CFV.MENUONCE){CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft-=1;
+CFV.FLocal[CFV.Location][CFV.current_Food].Bezerkbites-=1;}
+//console.log(CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft);
+
+CFV.MENUONCE=true;
+if(CFV.Location =="CakeTestingZone")
+{
+return RepeatBiteChunkBezerk+CancelBiteChunk;
+}
+if(CFV.Food_Lust<=48)//100% escape
+{
+
+return ((CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft>0)?RepeatBiteChunk:Nocake)+CancelBiteChunk;
+}
+else if (CFV.Food_Lust<=150){//lower chance of escape
+if(Math.random()*1<=chance)//fail
+{
+return (CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft>0)?RepeatBiteChunkBezerk:(Nocake+CancelBiteChunk);
+}else{
+return ((CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft>0)?RepeatBiteChunk:Nocake)+CancelBiteChunk;
+}
+}else{
+return (CFV.FLocal[CFV.Location][CFV.current_Food].BitesLeft>0)?RepeatBiteChunkBezerk:(Nocake2+CancelBiteChunk);
+}
+
+}
+
+function FILE_SAVE()
+{
+//They can mess with the file if they want to
+var Saveformat = {
+Stats:CFV.Stats,
+Lust:CFV.Food_Lust,
+Name:CFV.You,
+Location:SelectedPage,
+CurrentFood:CFV.current_Food,
+Settings: CFV.Settings,
+Statrealizeflags:CFV.Statrealize,
+StoryFlags:CFV.Story_Progress
+}
+const T= new Date();
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(Saveformat)));
+  element.setAttribute('download', "MM_SAVE_"+ Date.now()+".txt");
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+async function FILE_LOAD(Data)
+{
+  const file = event.target.files.item(0)
+  const text = await file.text();
+console.log(text)
+var Gameload =JSON.parse(text);
+CFV.Stats = Gameload.Stats
+CFV.Food_Lust = Gameload.Lust
+CFV.You = Gameload.Name
+SelectedPage = Gameload.Location
+CFV.current_Food = Gameload.CurrentFood
+CFV.Settings = Gameload.Settings
+
+CFV.Story_Progress = Gameload.StoryFlags
+}
+/*
+let buttonholder3 = document.createElement("input");
+buttonholder3.type = "file";
+buttonholder3.accept = ".chi_chart,.js";
+buttonholder3.id = "chichartfinder";
+buttonholder3.style = "display:none;";
+document.getElementById("CHIBI_BODY").appendChild(buttonholder3);
+input = document.getElementById('chichartfinder');
+input.addEventListener('change', Clipboard_ANTIYEET);
+
+let buttonholder2 = document.createElement("button");
+buttonholder2.id = "CP_button";
+buttonholder2.innerHTML = "<span class=\"material-icons\">upload</span>Load";
+buttonholder2.style.top= "0%";
+buttonholder2.style.right = "0%";
+buttonholder2.onclick= function(){document.getElementById("chichartfinder").click();};
+document.getElementById("CHIBI_BODY").appendChild(buttonholder2);*/
+async function readText(event) {
+  const file = event.target.files.item(0)
+  const text = await file.text();
+  
+  document.getElementById("output").innerText = text
+}
+
+</script>
+<script><!--Event conditional scripts-->
+
+
+
+
+</script>
+
+<!--Use Blosite text here-->
+<div edgeBoards style="position:fixed;top:0%;height:7%;width:100%;min-height:50px;background-color:#000;border-bottom:  4px dashed;text-align: left;z-index:23;left:0%;">
+<h3 id="Archivetitle" style="top:0%;margin-top:1%;text-align:center;">Genjituyon Archives</h3>
+</div>
+<br><br><br>
+<Blosite Menu _Hub id="Visiblemenu"><!--the Visiblemenu id is required-->
+</Blosite><br><br>
+<Blosite CHATLOG_RETURN style="font-size: 23px;"><span id="Lustbar">Lust[]</span></Blosite>
+<div  edgeBoards style="position:fixed;bottom:0%;height:10%;width:100%;min-height:50px;background-color:#000;border-top:  4px dashed;text-align: right;z-index:23;left:0%;" ></div>
+<!--Rp profile tab-->
+<div id="RP_Profile" class="transform"style="position:fixed;height:50%;width:40%;background-color:#000;border:  4px solid;text-align: left;z-index:26;left:56%;padding:1%;padding-top:3%;"><div id="toggler"style="position:absolute;top:0%;left:0%;width:100%;height:30px;border-bottom:1px solid;text-align: center;" onclick="showing_tab=!showing_tab; document.getElementById('RP_Profile').style.top=(showing_tab?'60%':'95%');this.innerText=(showing_tab?'▼':'▲');">▲</div>
+
+<b>Name: </b><span id="P.Name">???</span><br>
+<b>Height: </b><span id="P.Height">???</span><br>
+<b>Bust: </b><span id="P.Bust">???</span><br>
+<b>Muscle: </b><span id="P.Strength">???</span><br>
+<b>Rear: </b><span id="P.Hip">???</span><br>
+<b>Thighs: </b><span id="P.Thigh">???</span><br>
+<br>
+<input type="file" onchange="FILE_LOAD(event)" />
+
+</div>
+
+<!--Use Blosite text here-->
+<Blosite MenuData>
+<!-- {@SET-cake-3@} {@Display-cake@} cakes out for you.<br> {@Concat-_Lusttext-cake@} We clear on this?<br>{@SET-cake-1@}{@State-_Chompage-cake@}
+
+{@Function_set-Stats.STR-(10)@}
+{@Function_set-Stats.INT-(10)@}
+{@Function_set-Stats.HipMag-(14)@}
+{@Function_set-Stats.DEX-(10)@}
+{@Function_set-Stats.END-(12)@}
+{@Function_set-Food_Lust-(0)@}-->
+
+<!--Locations and destinations--!>
+
+<---->
+
+<!--Room Contents--!>
+
+<---->
+<Blosite Menu _Hub>
+{@Function_set-Stats.STR-(10)@}
+{@Function_set-Stats.INT-(12)@}
+{@Function_set-Stats.HipMag-(20)@}
+{@Function_set-Stats.DEX-(10)@}
+{@Function_set-Stats.END-(11)@}
+{@Function_set-Food_Lust-(0)@}
+
+<span class="Gian">{@Display-(You)@}</span> was working away in her workshop, repairing one of the legs of Minotari; the mech suit she built. Aside from damage to the metal, an oil-like fluid dripped out from a broken tube. She was almost done repairing when <span class="NSS">Sadie</span> burst through the door skipping towards <span class="Gian">{@Display-(You)@}</span>, standing <span class="Kits">{@Function_display-Stats.END-(convertHeightCentimeter(getHeight(16)))@} </span>, with <span class="Kits">{@Function_display-null-(GetBustsize(42))@}</span> sized breasts bouncing about, compared to <span class="Gian">{@Display-(You)@}'s</span> <span class="Kits">{@Function_display-null-(GetBustsize(Stats.INT))@}</span> bust.
+
+<br><br>
+<span class="NSS">"Hey Anne, Nice battle you had!" Sadie</span> compliments, hugging her friend.<span class="NSS"> Sadie's</span> bust pressed up against <span class="Gian">{@Display-(You)@}'s</span>, making her blush as her face was smothered.
+<br><br>
+
+Just as she pushed herself away, a drop of the fluid fell and landed in her hair. After she and her friend bidded farewell to eachother, <span class="Gian">{@Display-(You)@}</span> finished up the repairs; closed up shop for the night, and headed back home.<br><br>
+
+<span class="Gian">{@Display-(You)@}</span> lived in the apartment complex, Cyberset Heights, in apartment 301. She entered, and quickly headed to the washroom to clean herself up, when in the mirror she noticed the drop in her hair. <span class="Gian">"I got oil in my hair..."</span> she groaned,but when she went to clean it out, the oil was very sticky and very hard to clean out. She got it all over her, and eventually gave up trying to remove it, and cleaned the rest of herself.<br><br>
+
+<span class="Gian">{@Display-(You)@}</span> went bed soon after. Tomorrow was going to be another day of: get up, go to work, maybe fight a monster, sleep, and repeat. Right?
+
+<br>
+<br>
+<span class="Nezu"><Blosite MenuOption _biggerbustMorning>The next morning...</Blosite></span>
+<br>
+<br>
+</Blosite>
+
+<Blosite Menu _Debug>
+
+</Blosite>
+
+
+<Blosite Menu _biggerbustMorning>
+{@Function_set-Stats.INT-(Stats.INT+5)@}
+
+</Blosite>
+
+<Blosite Menu _trybutterfly>
+{@Set-StatsBonus-({"STR":0,"INT":0,"HipMag":0,"DEX":0,"END":0})@}
+{@Function_set-MENUONCE-(false)@}
+{@Function_set-Food_Lust-(Food_Lust+5)@}
+{@Function_set-current_Food-('Butterfly Cake')@}
+{@Concat-_tastingtemplate-(Food_Lust)@}
+{@Concat-_grow_end-(Food_Lust)@}
+{@Concat-_firstbite_part2-(Food_Lust)@}<br><br><br>
+{@State-MM_MenuHandler-(Food_Lust)@}
+
+</Blosite>
+
+<Blosite Menu _resetcake>
+
+Stats reset.<br>
+{@Function_set-Stats.STR-(10)@}
+{@Function_set-Stats.INT-(10)@}
+{@Function_set-Stats.HipMag-(14)@}
+{@Function_set-Stats.DEX-(10)@}
+{@Function_set-Stats.END-(12)@}
+{@Function_set-Food_Lust-(0)@}
+<span class="Nezu"><Blosite MenuOption _caketesting>Return</Blosite></span><br>
+</Blosite>
+
+
+<Blosite Menu _grow_str>
+{@Function_set-OldStat-(Stats.STR)@}
+<!-- . She could feel her body grow, getting taller and taller.  -->
+{@Function_set-Stats.STR-(Stats.STR+Math.round(1*Math.ceil(Food_Lust/48))+StatsBonus.STR)@}
+
+{@State-GetQuote_STR-(200)@}
+<!-- {@Function_display-Stats.STR-(convertMeasurementInch(getBicepSize(Stats.STR,Stats.END)))@} -->
+</Blosite>
+<Blosite Menu _grow_int>
+<!-- and felt a warm feeling in her chest -->
+{@Function_set-OldStat-(Stats.INT)@}
+{@Function_set-Stats.INT-(Stats.INT+Math.floor(1+Math.floor(Food_Lust/64))+StatsBonus.INT)@}
+{@Display-(OldStat)@}--&gt;{@Display-(Stats.INT)@}
+{@State-CheckBustDifference-(OldStat,Stats.INT)@}
+{@BIFURCATE_HIDE-(Stats.INT&gt;13&&!Statrealize.INT)-(Statrealize.INT=true)@}
+{@State-GetQuote_INT-(200)@}
+
+</Blosite>
+<Blosite Menu _grow_hipmag>
+{@Function_set-OldStat-(Stats.HipMag)@}
+<!-- and felt a warm feeling in her hips, as they increased in size to  -->
+{@Function_set-Stats.HipMag-(Stats.HipMag+Math.round(1*Math.ceil(Food_Lust/64))+StatsBonus.HipMag)@}
+{@State-CheckHipDifference-(OldStat,Stats.HipMag)@}
+{@BIFURCATE_HIDE-(Stats.HipMag&gt;13&&!Statrealize.HipMag)-(Statrealize.HipMag=true)@}
+{@State-GetQuote_HIPMAG-(200)@}
+<!-- {@Function_display-Stats.HipMag-(convertMeasurementInch(getHipSize(Stats.STR,Stats.DEX,Stats.HipMag,Stats.END)))@} -->
+</Blosite>
+<Blosite Menu _grow_dex>
+{@Function_set-OldStat-(Stats.DEX)@}
+<!-- . She could feel her body grow, getting taller and taller.  -->
+{@Function_set-Stats.DEX-(Stats.DEX+Math.round(1*Math.ceil(Food_Lust/64))+StatsBonus.DEX)@}
+{@BIFURCATE_HIDE-(Stats.DEX&gt;13&&!Statrealize.DEX)-(Statrealize.DEX=true)@}
+{@State-GetQuote_DEX-(200)@}
+<!-- {@Function_display-Stats.DEX-(convertMeasurementInch(getThighSize(Stats.DEX,Stats.END)))@} -->
+</Blosite>
+
+<Blosite Menu _grow_end>
+{@Function_set-OldStat-(Stats.END)@}
+<!-- . She could feel her body grow, getting taller and taller. --> 
+{@Function_set-Stats.END-(Stats.END+Math.round(1*Math.ceil(Food_Lust/64))+StatsBonus.END)@}
+{@BIFURCATE_HIDE-(Stats.END&gt;13&&!Statrealize.END)-(Statrealize.END=true)@}
+{@State-GetQuote_END-(200)@}
+<!-- {@Function_display-Stats.END-(convertHeightCentimeter(getHeight(Stats.END)))@} -->
+</Blosite>
+<!--Growth Dialog-->
+
+
+<!--Story Dialog-->
+
+
+
+
+
+
+
+
+<!--Story Dialog-->
+<Blosite Menu _Password_Novau>
+<span class="Nezu">Enter the <b>[Genjituyon Secure Sequence<sup>tm</sup>]</b></span><br><br>
+Password:{ <Blosite Input READONLY></Blosite> }<br>
+<span Announcer class="Nezu"></span><br>
+<Blosite MenuOption _VerifyPassword>Enter</Blosite><br>
+<Blosite MenuOption _DEbugPage1>Back</Blosite><br>
+</Blosite>
+
+<Blosite CookiePagesMeta></Blosite>
+
+
+</Blosite>
+
+<script src="./Internals/Core.js"></script>
+<script>
+if(devtools.isOpen&&CORRUPTFUCK_BOMB)
+{
+document.documentElement.innerHTML=Corruption_Bomb(document.documentElement.innerHTML)
+console.clear();
+}
+
+window.addEventListener('devtoolschange', event => {
+if(event.detail.isOpen&&CORRUPTFUCK_BOMB)
+{
+console.clear();
+document.documentElement.innerHTML=Corruption_Bomb(document.documentElement.innerHTML)
+}
+});
+	</script>
+
+</body>
+</html>
