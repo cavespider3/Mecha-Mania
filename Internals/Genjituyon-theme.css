@@ -91,7 +91,7 @@ Blosite[MenuOption]{user-select: none; /* supported by Chrome and Opera */
    -khtml-user-select: none; /* Konqueror HTML */
    -moz-user-select: none; /* Firefox */
    -ms-user-select: none; /* Internet Explorer/Edge */	
-   font-size: 24px;
+   font-size: 32px;
 	}
 
 Blosite[Click_Safe]:hover{font-weight: bold;cursor:pointer;}
